@@ -1,18 +1,15 @@
-const player = document.querySelector(".player");
-const video = player.querySelector(".viewer");
-const progress = player.querySelector(".progress");
-const progressFilled = player.querySelector(".progress__filled");
-const toggle = player.querySelector(".toggle");
-const skipButtons = player.querySelectorAll("[data-skip]");
-const sliders = player.querySelectorAll(".player__slider");
+const video = document.querySelector(".player__video");
+const toggle = document.querySelector(".toggle");
+const rewindBtn = document.querySelector(".rewind");
+const forwardBtn = document.querySelector(".forward");
+const progress = document.querySelector(".progress");
+const progressFilled = document.querySelector(".progress__filled");
+const sliders = document.querySelectorAll("input");
 
 // ▶️ Play / Pause
 function togglePlay() {
-  if (video.paused) {
-    video.play();
-  } else {
-    video.pause();
-  }
+  if (video.paused) video.play();
+  else video.pause();
 }
 
 // Change icon
@@ -20,9 +17,14 @@ function updateButton() {
   toggle.textContent = video.paused ? "►" : "❚ ❚";
 }
 
-// ⏩ Skip
-function skip() {
-  video.currentTime += parseFloat(this.dataset.skip);
+// ⏪ Rewind 10s
+function rewind() {
+  video.currentTime -= 10;
+}
+
+// ⏩ Forward 25s
+function forward() {
+  video.currentTime += 25;
 }
 
 // 🔊 Volume & Speed
@@ -30,34 +32,32 @@ function handleRangeUpdate() {
   video[this.name] = this.value;
 }
 
-// 📊 Progress Bar Update
-function handleProgress() {
+// 📊 Progress Update
+function updateProgress() {
   const percent = (video.currentTime / video.duration) * 100;
-  progressFilled.style.width = `${percent}%`;
+  progressFilled.style.width = percent + "%";
 }
 
 // Click progress to seek
 function scrub(e) {
-  const scrubTime =
-    (e.offsetX / progress.offsetWidth) * video.duration;
-  video.currentTime = scrubTime;
+  const time = (e.offsetX / progress.offsetWidth) * video.duration;
+  video.currentTime = time;
 }
 
-// EVENT LISTENERS
+// EVENTS
 video.addEventListener("click", togglePlay);
+toggle.addEventListener("click", togglePlay);
+
 video.addEventListener("play", updateButton);
 video.addEventListener("pause", updateButton);
 
-toggle.addEventListener("click", togglePlay);
+rewindBtn.addEventListener("click", rewind);
+forwardBtn.addEventListener("click", forward);
 
-skipButtons.forEach(btn =>
-  btn.addEventListener("click", skip)
+sliders.forEach(s =>
+  s.addEventListener("input", handleRangeUpdate)
 );
 
-sliders.forEach(slider =>
-  slider.addEventListener("input", handleRangeUpdate)
-);
-
-video.addEventListener("timeupdate", handleProgress);
+video.addEventListener("timeupdate", updateProgress);
 
 progress.addEventListener("click", scrub);

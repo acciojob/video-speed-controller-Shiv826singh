@@ -1,5 +1,3 @@
-
-/* Your CSS Code here. */
 body {
   background: #111;
   display: flex;
@@ -9,39 +7,33 @@ body {
 
 .player {
   max-width: 750px;
-  border: 3px solid black;
   background: black;
 }
 
-.viewer {
+.player__video {
   width: 100%;
 }
 
 .controls {
+  background: #333;
+  padding: 10px;
   display: flex;
   align-items: center;
-  padding: 10px;
-  background: #333;
 }
 
-.player__button {
+button {
   margin-right: 10px;
-  font-size: 16px;
   cursor: pointer;
 }
 
-.player__slider {
-  margin: 0 10px;
-}
-
 .progress {
-  background: #555;
   height: 10px;
+  background: #555;
   cursor: pointer;
 }
 
 .progress__filled {
   background: red;
-  width: 0%;
   height: 100%;
+  width: 0%;
 }
